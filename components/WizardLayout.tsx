@@ -170,7 +170,7 @@ export default function WizardLayout() {
             currentStep={currentStep}
             totalSteps={totalSteps}
             onPrev={() => navigateTo(currentStep - 1)}
-            onNext={() => navigateTo(currentStep + 1)}
+            onNext={() => currentStep === totalSteps - 1 ? navigateTo(0, true) : navigateTo(currentStep + 1)}
           />
         </div>
       </div>
