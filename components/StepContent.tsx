@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import type { StepData } from "@/data/steps";
 import CodeBlock from "./CodeBlock";
 import WarningBox from "./WarningBox";
@@ -11,41 +12,52 @@ interface StepContentProps {
   totalSteps: number;
 }
 
+const staggerItem = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
+
 export default function StepContent({ step, totalSteps }: StepContentProps) {
-  const stepLabel = `[${String(step.stepNumber).padStart(2, "0")}/${String(totalSteps).padStart(2, "0")}]`;
-
   return (
-    <div className="glass-card corner-brackets rounded-xl p-6 sm:p-8 space-y-6">
-      <div className="space-y-3">
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-orbitron text-sm text-primary tracking-wider">
-            {stepLabel}
-          </span>
-          <span className="px-3 py-1 rounded-full bg-secondary/15 text-secondary text-xs font-orbitron tracking-wide">
-            {step.phaseTitle}
-          </span>
-        </div>
-        <h2 className="font-orbitron text-2xl text-text-primary">{step.title}</h2>
-      </div>
+    <motion.div
+      initial="hidden"
+      animate="show"
+      variants={{
+        show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+      }}
+      className="space-y-6"
+    >
+      {/* Header */}
+      <motion.div variants={staggerItem} className="space-y-2">
+        <p className="font-orbitron text-[11px] text-secondary tracking-[0.15em] uppercase">
+          Phase {step.phase} · {step.phaseTitle}
+        </p>
+        <h2 className="font-orbitron text-2xl sm:text-3xl text-text-primary leading-tight">
+          {step.title}
+        </h2>
+      </motion.div>
 
-      <div className="text-text-secondary leading-relaxed">
+      {/* Description */}
+      <motion.div variants={staggerItem} className="text-text-secondary text-base leading-relaxed">
         {step.description.split("\n").map((line, i) => (
-          <p key={i} className={i > 0 ? "mt-2" : ""}>
+          <p key={i} className={i > 0 ? "mt-3" : ""}>
             {line}
           </p>
         ))}
-      </div>
+      </motion.div>
 
+      {/* Warnings */}
       {step.warnings && step.warnings.length > 0 && (
-        <div className="space-y-4">
+        <motion.div variants={staggerItem} className="space-y-3">
           {step.warnings.map((warning, i) => (
             <WarningBox key={i}>{warning}</WarningBox>
           ))}
-        </div>
+        </motion.div>
       )}
 
+      {/* Commands */}
       {step.commands && step.commands.length > 0 && (
-        <div className="space-y-4">
+        <motion.div variants={staggerItem} className="space-y-4">
           {step.commands.map((cmd, i) => (
             <CodeBlock
               key={i}
@@ -54,24 +66,26 @@ export default function StepContent({ step, totalSteps }: StepContentProps) {
               language={cmd.language}
             />
           ))}
-        </div>
+        </motion.div>
       )}
 
+      {/* Notes */}
       {step.notes && step.notes.length > 0 && (
-        <div className="space-y-4">
+        <motion.div variants={staggerItem} className="space-y-3">
           {step.notes.map((note, i) => (
             <NoteBox key={i}>{note}</NoteBox>
           ))}
-        </div>
+        </motion.div>
       )}
 
+      {/* Tips */}
       {step.tips && step.tips.length > 0 && (
-        <div className="space-y-4">
+        <motion.div variants={staggerItem} className="space-y-3">
           {step.tips.map((tip, i) => (
             <TipBox key={i}>{tip}</TipBox>
           ))}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

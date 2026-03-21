@@ -1,14 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface CodeBlockProps {
   command: string;
   label?: string;
   language?: string;
 }
+
+const LANG_CONFIG: Record<string, { dot: string; badgeClass: string; prompt?: string }> = {
+  bash: { dot: "#7ee787", badgeClass: "lang-badge-bash", prompt: "$ " },
+  sql: { dot: "#a78bfa", badgeClass: "lang-badge-sql", prompt: "mysql> " },
+  lua: { dot: "#fbbf24", badgeClass: "lang-badge-lua" },
+  ini: { dot: "#00e5ff", badgeClass: "lang-badge-default" },
+  powershell: { dot: "#00e5ff", badgeClass: "lang-badge-default", prompt: "PS> " },
+};
 
 export default function CodeBlock({ command, label, language }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
@@ -19,34 +25,43 @@ export default function CodeBlock({ command, label, language }: CodeBlockProps) 
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const lang = language?.toLowerCase() || "default";
+  const config = LANG_CONFIG[lang] || { dot: "#00e5ff", badgeClass: "lang-badge-default" };
+  const langClass = `lang-${lang in LANG_CONFIG ? lang : "default"}`;
+
   return (
-    <div className="space-y-1">
-      {label && (
-        <p className="text-sm text-text-secondary font-jetbrains">{label}</p>
-      )}
-      <div className="relative bg-code-bg rounded-lg code-glow-border scanline-overlay overflow-hidden">
-        {language && (
-          <span className="absolute top-2 left-4 text-[10px] font-orbitron text-text-muted uppercase tracking-widest">
-            {language}
+    <div className={`terminal-card ${langClass}`}>
+      <div className="terminal-card-header">
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block w-2 h-2 rounded-full"
+            style={{ backgroundColor: config.dot }}
+          />
+          <span className="text-text-secondary truncate">
+            {label || "Command"}
           </span>
-        )}
-        <button
-          onClick={handleCopy}
-          className={cn(
-            "glass-button absolute top-2 right-2 p-1.5 rounded text-xs transition-colors",
-            copied ? "text-success" : "text-text-muted hover:text-primary"
-          )}
-          aria-label="Copy to clipboard"
-        >
-          {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-        </button>
-        <div className={cn("overflow-x-auto scrollbar-glass", language ? "pt-8" : "pt-4")}>
-          <pre className="p-4 pt-0">
-            <code className="font-jetbrains text-sm text-text-primary whitespace-pre">
-              {command}
-            </code>
-          </pre>
         </div>
+        <div className="flex items-center gap-3">
+          {language && (
+            <span className={`lang-badge ${config.badgeClass}`}>
+              {language}
+            </span>
+          )}
+          <button
+            onClick={handleCopy}
+            className="text-secondary hover:text-primary transition-colors cursor-pointer text-xs whitespace-nowrap"
+          >
+            {copied ? "Copied ✓" : "Copy ⧉"}
+          </button>
+        </div>
+      </div>
+      <div className="terminal-card-body scrollbar-glass">
+        <pre className="whitespace-pre-wrap break-all">
+          {config.prompt && (
+            <span style={{ color: config.dot }}>{config.prompt}</span>
+          )}
+          {command}
+        </pre>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { STEPS } from "@/data/steps";
 
 const STORAGE_KEY = "swgemu-guide-progress";
 
@@ -75,6 +76,17 @@ export function useWizardProgress() {
     saveProgress({ currentStep: 0, visitedSteps: [] });
   }, []);
 
+  const getPhaseProgress = useCallback(
+    (phaseNumber: number) => {
+      const phaseSteps = STEPS.filter((s) => s.phase === phaseNumber);
+      const visited = phaseSteps.filter((s) =>
+        visitedSteps.includes(STEPS.indexOf(s))
+      ).length;
+      return { visited, total: phaseSteps.length };
+    },
+    [visitedSteps]
+  );
+
   return {
     currentStep,
     setCurrentStep,
@@ -82,5 +94,6 @@ export function useWizardProgress() {
     markVisited,
     resetProgress,
     mounted,
+    getPhaseProgress,
   };
 }
