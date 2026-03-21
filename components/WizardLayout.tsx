@@ -103,7 +103,7 @@ export default function WizardLayout() {
 
   const slideVariants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 80 : dir < 0 ? -80 : 0,
+      x: dir > 0 ? 40 : dir < 0 ? -40 : 0,
       opacity: 0,
     }),
     center: {
@@ -111,7 +111,7 @@ export default function WizardLayout() {
       opacity: 1,
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? -80 : dir < 0 ? 80 : 0,
+      x: dir > 0 ? -40 : dir < 0 ? 40 : 0,
       opacity: 0,
     }),
   };
@@ -155,7 +155,7 @@ export default function WizardLayout() {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             >
               {currentStepData && (
                 <StepContent

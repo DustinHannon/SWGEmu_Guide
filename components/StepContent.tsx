@@ -13,8 +13,8 @@ interface StepContentProps {
 }
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+  hidden: { opacity: 0, y: 6 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" as const } },
 };
 
 export default function StepContent({ step, totalSteps }: StepContentProps) {
@@ -23,7 +23,7 @@ export default function StepContent({ step, totalSteps }: StepContentProps) {
       initial="hidden"
       animate="show"
       variants={{
-        show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+        show: { transition: { staggerChildren: 0.04, delayChildren: 0.05 } },
       }}
       className="space-y-6"
     >

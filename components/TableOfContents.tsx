@@ -98,7 +98,7 @@ export default function TableOfContents({
             initial={{ x: -340, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -340, opacity: 0 }}
-            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
             className="toc-panel"
           >
             {/* Header */}

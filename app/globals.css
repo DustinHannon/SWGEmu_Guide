@@ -40,8 +40,8 @@ body {
 /* Animated mesh gradient background */
 .bg-mesh-gradient {
   background: linear-gradient(-45deg, #0f0520, #0a1628, #0d1f3c, #0f0520, #0a1628);
-  background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
+  background-size: 200% 200%;
+  animation: gradientShift 30s ease infinite;
 }
 
 /* Dot-grid HUD overlay */
@@ -53,32 +53,32 @@ body {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(0, 229, 255, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
   background-size: 30px 30px;
   pointer-events: none;
   z-index: 0;
+  will-change: transform;
 }
 
 /* Glass morphism utilities */
 .glass {
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
   background-color: var(--color-glass-bg);
   border: 1px solid var(--color-glass-border);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .glass-card {
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
   background-color: rgba(255, 255, 255, 0.04);
   background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border: 1px solid rgba(0, 229, 255, 0.12);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 229, 255, 0.03);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
 }
 
 .glass-card:hover {
   background-color: var(--color-glass-bg-hover);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), inset 0 0 30px rgba(0, 229, 255, 0.05);
 }
 
 .glass-button {
@@ -112,7 +112,7 @@ body {
 }
 
 .glass-panel {
-  backdrop-filter: blur(24px);
+  backdrop-filter: blur(12px);
   background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
   border: 1px solid var(--color-glass-border);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -299,12 +299,12 @@ body {
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  backdrop-filter: blur(20px);
-  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  background-color: rgba(15, 23, 42, 0.8);
   background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border: 1px solid rgba(0, 229, 255, 0.12);
   border-radius: 1rem;
-  box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 229, 255, 0.05);
+  box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.4);
   padding: 2rem 2.5rem;
 }
 
@@ -411,7 +411,6 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
   z-index: 50;
 }
 
@@ -422,7 +421,7 @@ body {
   bottom: 0.75rem;
   width: 320px;
   max-width: calc(100vw - 1.5rem);
-  backdrop-filter: blur(24px);
+  backdrop-filter: blur(16px);
   background: rgba(15, 23, 42, 0.95);
   border: 1px solid rgba(0, 229, 255, 0.15);
   border-radius: 1rem;
@@ -439,6 +438,7 @@ body {
   top: 1.25rem;
   right: 1.25rem;
   z-index: 40;
+  will-change: transform;
 }
 
 .progress-ring-bg {
@@ -452,7 +452,7 @@ body {
   stroke: url(#progressGradient);
   stroke-width: 3;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.5s ease;
+  transition: stroke-dashoffset 0.3s ease;
   transform: rotate(-90deg);
   transform-origin: center;
 }
@@ -481,7 +481,7 @@ body {
   top: 1.25rem;
   left: 1.25rem;
   z-index: 40;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
   background-color: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(0, 229, 255, 0.15);
   border-radius: 0.5rem;
@@ -490,7 +490,8 @@ body {
   font-family: 'Orbitron', sans-serif;
   font-size: 0.7rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease;
+  will-change: transform;
   display: flex;
   align-items: center;
   gap: 0.4rem;
