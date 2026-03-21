@@ -10,27 +10,41 @@ Wizard-style guide website for setting up a SWGEmu (Star Wars Galaxies Emulator)
 - **Next.js 16** (App Router, static export)
 - **Tailwind CSS v4** (CSS-based config via `@theme` in globals.css)
 - **TypeScript**
-- **Framer Motion** (step transitions)
+- **Framer Motion** (step transitions, staggered entrance animations, TOC panel)
 - **lucide-react** (icons)
 - **Fonts:** Orbitron (headings), Geist Sans (body), JetBrains Mono (code)
 
 ## Architecture
 Single-page app, no backend. All guide content lives in `data/steps.ts` as structured TypeScript data.
 
+### Layout: Centered Stage
+Content is displayed in a centered glass card (`stage-container` / `stage-card`) that fills ~85vh. No persistent sidebar — navigation is a floating overlay panel toggled via button or Esc key.
+
 ### Key Files
-- `data/steps.ts` - All 23 guide steps (commands, warnings, notes, tips)
-- `components/WizardLayout.tsx` - Main orchestrator (state, sidebar, transitions, keyboard nav)
-- `components/CodeBlock.tsx` - Terminal-styled code with clipboard copy
-- `components/TableOfContents.tsx` - Left sidebar with collapsible phases
-- `hooks/useWizardProgress.ts` - localStorage progress tracking
-- `app/globals.css` - "Command Console" glass morphism design system
+- `data/steps.ts` - All 23 guide steps with typed `CommandBlock` (label, command, language)
+- `components/WizardLayout.tsx` - Main orchestrator (centered stage layout, TOC toggle state, keyboard nav, Framer Motion transitions)
+- `components/CodeBlock.tsx` - Terminal-style code cards, color-coded by language (bash=green, sql=purple, lua=amber, default=cyan)
+- `components/TableOfContents.tsx` - Floating slide-over TOC panel with per-phase progress badges, expandable sections, backdrop blur
+- `components/ProgressBar.tsx` - Two exports: `ProgressRing` (SVG circle, top-right) and `ProgressLine` (gradient bar, bottom)
+- `components/StepContent.tsx` - Step renderer with staggered Framer Motion entrance animations
+- `components/StepNavigation.tsx` - Prev/Next buttons in card footer
+- `components/NoteBox.tsx`, `WarningBox.tsx`, `TipBox.tsx` - Callout components
+- `hooks/useWizardProgress.ts` - localStorage progress tracking + `getPhaseProgress()` helper
+- `app/globals.css` - Design system with stage layout, terminal cards, floating TOC, progress ring/line styles
 
 ### Design System: "Command Console"
-- Sci-fi glass morphism with restrained techy feel
+- Sci-fi glass morphism with centered stage layout
 - Purple-to-navy animated mesh gradient background
 - Dot-grid HUD overlay
 - Electric cyan (`#00e5ff`) primary, violet (`#a78bfa`) secondary
-- CSS classes: `.glass`, `.glass-card`, `.glass-button`, `.corner-brackets`, `.scanline-overlay`, `.code-glow-border`
+- Terminal cards color-coded by language: bash (`#7ee787`), sql (`#a78bfa`), lua (`#fbbf24`)
+- CSS classes: `.stage-container`, `.stage-card`, `.terminal-card`, `.terminal-card-header`, `.toc-panel`, `.toc-toggle`, `.progress-ring-*`, `.progress-line`, `.glass`, `.glass-card`, `.corner-brackets`, `.lang-badge-*`, `.phase-badge-*`
+
+### Keyboard Shortcuts
+- `←→` arrow keys: navigate between steps
+- `Esc`: toggle TOC panel open/close
+- `Home`: jump to first step
+- `End`: jump to last step
 
 ## Development
 ```bash
