@@ -1,37 +1,58 @@
 "use client";
 
-interface ProgressBarProps {
+interface ProgressRingProps {
   currentStep: number;
   totalSteps: number;
 }
 
-export default function ProgressBar({
-  currentStep,
-  totalSteps,
-}: ProgressBarProps) {
-  const progress = ((currentStep + 1) / totalSteps) * 100;
-  const label = `[${String(currentStep + 1).padStart(2, "0")}/${String(totalSteps).padStart(2, "0")}]`;
+export function ProgressRing({ currentStep, totalSteps }: ProgressRingProps) {
+  const progress = (currentStep + 1) / totalSteps;
+  const radius = 22;
+  const circumference = 2 * Math.PI * radius;
+  const dashOffset = circumference * (1 - progress);
 
   return (
-    <div className="glass border-b border-glass-border px-4 py-2 flex items-center gap-4 z-50">
-      <span className="font-orbitron text-xs text-primary tracking-wider shrink-0">
-        {label}
-      </span>
-      <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-500 ease-out"
-          style={{
-            width: `${progress}%`,
-            background:
-              "linear-gradient(90deg, #00e5ff 0%, #a78bfa 100%)",
-          }}
-        >
-          <div className="w-full h-full animate-shimmer" />
-        </div>
+    <div className="progress-ring-container">
+      <svg width="56" height="56" viewBox="0 0 56 56">
+        <defs>
+          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#00e5ff" />
+            <stop offset="100%" stopColor="#a78bfa" />
+          </linearGradient>
+        </defs>
+        <circle cx="28" cy="28" r={radius} className="progress-ring-bg" />
+        <circle
+          cx="28"
+          cy="28"
+          r={radius}
+          className="progress-ring-fill"
+          strokeDasharray={circumference}
+          strokeDashoffset={dashOffset}
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="font-orbitron text-sm text-text-primary font-bold leading-none">
+          {currentStep + 1}
+        </span>
+        <span className="text-[8px] text-text-muted leading-none mt-0.5">
+          of {totalSteps}
+        </span>
       </div>
-      <span className="font-orbitron text-[10px] text-text-muted tracking-wider shrink-0">
-        {Math.round(progress)}%
-      </span>
+    </div>
+  );
+}
+
+interface ProgressLineProps {
+  currentStep: number;
+  totalSteps: number;
+}
+
+export function ProgressLine({ currentStep, totalSteps }: ProgressLineProps) {
+  const progress = ((currentStep + 1) / totalSteps) * 100;
+
+  return (
+    <div className="progress-line">
+      <div className="progress-line-fill" style={{ width: `${progress}%` }} />
     </div>
   );
 }
