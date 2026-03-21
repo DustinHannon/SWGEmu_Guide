@@ -146,7 +146,7 @@ export default function WizardLayout() {
 
       {/* Centered Stage */}
       <div className="stage-container">
-        <div ref={cardRef} className="stage-card corner-brackets scrollbar-glass">
+        <div ref={cardRef} className="stage-card corner-brackets">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentStep}
